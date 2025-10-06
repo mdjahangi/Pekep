@@ -1,26 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gucci MVP - Luxury E-commerce</title>
+<html>
+<head>
+    <title>Gucci Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              'gucci-gold': '#c4a747',
-              'gucci-green': '#0f5132'
-            }
-          }
-        }
-      }
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-4xl mx-auto p-6">
+        <h1 class="text-4xl font-bold text-center mb-8">GUCCI STORE</h1>
+        
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-white rounded-lg shadow p-6">
+                <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop" 
+                     class="w-full h-48 object-cover rounded mb-4">
+                <h3 class="text-xl font-semibold">GG Marmont Bag</h3>
+                <p class="text-gray-600 mb-2">Luxurious leather bag</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-2xl font-bold">$1,280</span>
+                    <button class="bg-black text-white px-4 py-2 rounded">Add to Cart</button>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow p-6">
+                <img src="https://images.unsplash.com/photo-1601924582970-9238bcb495d9?w=400&h=300&fit=crop" 
+                     class="w-full h-48 object-cover rounded mb-4">
+                <h3 class="text-xl font-semibold">GG Supreme Belt</h3>
+                <p class="text-gray-600 mb-2">Iconic canvas belt</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-2xl font-bold">$450</span>
+                    <button class="bg-black text-white px-4 py-2 rounded">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="text-center mt-12 text-gray-600">
+            <p>© 2024 Gucci. Demo Store</p>
+        </footer>
+    </div>
+</body>
 </html>
