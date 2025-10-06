@@ -1,40 +1,222 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Gucci Store</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gucci MVP Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
-    <div class="max-w-4xl mx-auto p-6">
-        <h1 class="text-4xl font-bold text-center mb-8">GUCCI STORE</h1>
-        
-        <div class="grid md:grid-cols-2 gap-6">
-            <div class="bg-white rounded-lg shadow p-6">
-                <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop" 
-                     class="w-full h-48 object-cover rounded mb-4">
-                <h3 class="text-xl font-semibold">GG Marmont Bag</h3>
-                <p class="text-gray-600 mb-2">Luxurious leather bag</p>
-                <div class="flex justify-between items-center">
-                    <span class="text-2xl font-bold">$1,280</span>
-                    <button class="bg-black text-white px-4 py-2 rounded">Add to Cart</button>
-                </div>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold">GUCCI</h1>
+            <div class="relative">
+                <button id="cartBtn" class="bg-black text-white px-4 py-2 rounded-lg">
+                    Cart 🛒
+                </button>
+                <span id="cartCount" class="cart-badge hidden">0</span>
             </div>
-            
-            <div class="bg-white rounded-lg shadow p-6">
-                <img src="https://images.unsplash.com/photo-1601924582970-9238bcb495d9?w=400&h=300&fit=crop" 
-                     class="w-full h-48 object-cover rounded mb-4">
-                <h3 class="text-xl font-semibold">GG Supreme Belt</h3>
-                <p class="text-gray-600 mb-2">Iconic canvas belt</p>
-                <div class="flex justify-between items-center">
-                    <span class="text-2xl font-bold">$450</span>
-                    <button class="bg-black text-white px-4 py-2 rounded">Add to Cart</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-black text-white py-16">
+        <div class="max-w-6xl mx-auto text-center px-4">
+            <h2 class="text-4xl font-bold mb-4">GG Marmont Collection</h2>
+            <p class="text-gray-300">Luxurious leather goods with distinctive chevron pattern</p>
+        </div>
+    </section>
+
+    <!-- Products -->
+    <main class="max-w-6xl mx-auto py-12 px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="productsGrid">
+            <!-- Products will be loaded here by JavaScript -->
+        </div>
+    </main>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg max-w-md w-full max-h-96 overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold">Your Cart</h3>
+                    <button id="closeCart" class="text-gray-500 text-2xl">&times;</button>
+                </div>
+                <div id="cartItems" class="space-y-4">
+                    <!-- Cart items will appear here -->
+                </div>
+                <div id="emptyCart" class="text-center py-8">
+                    <p class="text-gray-500">Your cart is empty</p>
+                </div>
+                <div id="cartTotal" class="border-t pt-4 mt-4 hidden">
+                    <div class="flex justify-between font-bold text-lg">
+                        <span>Total:</span>
+                        <span id="totalAmount">$0.00</span>
+                    </div>
+                    <button class="w-full bg-black text-white py-3 rounded-lg mt-4">
+                        Checkout
+                    </button>
                 </div>
             </div>
         </div>
-        
-        <footer class="text-center mt-12 text-gray-600">
-            <p>© 2024 Gucci. Demo Store</p>
-        </footer>
     </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 py-8 mt-12">
+        <div class="max-w-6xl mx-auto text-center px-4">
+            <p class="text-gray-600">© 2024 Gucci. Demo Store</p>
+        </div>
+    </footer>
+
+    <script>
+        // Product Data
+        const products = [
+            {
+                id: 1,
+                name: "GG Marmont Bag",
+                price: 1280,
+                image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop",
+                description: "Crafted from soft matelassé leather with iconic GG hardware."
+            },
+            {
+                id: 2,
+                name: "GG Supreme Belt", 
+                price: 450,
+                image: "https://images.unsplash.com/photo-1601924582970-9238bcb495d9?w=400&h=300&fit=crop",
+                description: "Iconic canvas belt with green-red-green web stripe."
+            },
+            {
+                id: 3,
+                name: "Leather Loafers",
+                price: 650,
+                image: "https://images.unsplash.com/photo-1542280756-74b2f55e73ab?w=400&h=300&fit=crop",
+                description: "Luxurious leather slippers with horsebit detail."
+            }
+        ];
+
+        let cart = [];
+
+        // Display Products
+        function displayProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = products.map(product => `
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">${product.name}</h3>
+                        <p class="text-gray-600 mb-4">${product.description}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold">$${product.price.toLocaleString()}</span>
+                            <button onclick="addToCart(${product.id})" 
+                                    class="bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Cart Functions
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            cart.push(product);
+            updateCartUI();
+            showNotification(`${product.name} added to cart!`);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            // Update cart count
+            const cartCount = document.getElementById('cartCount');
+            cartCount.textContent = cart.length;
+            cartCount.classList.toggle('hidden', cart.length === 0);
+
+            // Update cart items
+            const cartItems = document.getElementById('cartItems');
+            const emptyCart = document.getElementById('emptyCart');
+            const cartTotal = document.getElementById('cartTotal');
+            const totalAmount = document.getElementById('totalAmount');
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = '';
+                emptyCart.classList.remove('hidden');
+                cartTotal.classList.add('hidden');
+            } else {
+                emptyCart.classList.add('hidden');
+                cartTotal.classList.remove('hidden');
+                
+                cartItems.innerHTML = cart.map((item, index) => `
+                    <div class="flex justify-between items-center border-b pb-4">
+                        <div>
+                            <h4 class="font-semibold">${item.name}</h4>
+                            <p class="text-gray-600">$${item.price.toLocaleString()}</p>
+                        </div>
+                        <button onclick="removeFromCart(${index})" 
+                                class="text-red-500 hover:text-red-700">
+                            Remove
+                        </button>
+                    </div>
+                `).join('');
+
+                const total = cart.reduce((sum, item) => sum + item.price, 0);
+                totalAmount.textContent = `$${total.toLocaleString()}`;
+            }
+        }
+
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Event Listeners
+        document.getElementById('cartBtn').addEventListener('click', () => {
+            document.getElementById('cartModal').classList.remove('hidden');
+        });
+
+        document.getElementById('closeCart').addEventListener('click', () => {
+            document.getElementById('cartModal').classList.add('hidden');
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('cartModal').addEventListener('click', (e) => {
+            if (e.target.id === 'cartModal') {
+                e.target.classList.add('hidden');
+            }
+        });
+
+        // Initialize
+        displayProducts();
+        updateCartUI();
+    </script>
 </body>
 </html>
