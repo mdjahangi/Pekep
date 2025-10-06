@@ -19,8 +19,6 @@
     "vite": "^4.3.0"
   },
   "homepage": "https://mdjahangi.github.io/Pekep",
-"scripts": {
-  "predeploy": "npm run build",
-  "deploy": "gh-pages -d dist"
+
 }
 }
